@@ -13,7 +13,7 @@ git clone "$REPO_URL" --quiet
 cd "$(basename "$REPO_URL" .git)"
 
 # Read the CSV file line by line and clone the users
-while IFS=',' read -r ID Name Email Slack GitHub Team Jira
+while IFS=',' read -r Name Email GitHub
 do
     echo "Cloning $username"
     git clone "https://$Name:$Email:$GitHub@github.com/$username/your_repository.git" --quiet
