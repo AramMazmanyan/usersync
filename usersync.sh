@@ -9,3 +9,13 @@ https://api.github.com/repos/$GITHUB_USERNAME/$REPO_NAME/contents/usersync.csv?r
 '"' -f 3)
 
 git clone $CSV_URL users
+
+username=($(awk -F ',' '{print $2}' users/usersync.csv))
+
+for username in "${usernames[@]}"; do
+    if ! az ad user show --id $username@<tenant> >/dev/null 2>&1; then
+        # user does not exist in Azure AD, create the user using the Azure CLI
+        az ad user create --user-principal-name $username@<tenant> --display-name 
+$username
+    fi
+done
