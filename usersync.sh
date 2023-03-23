@@ -1,11 +1,20 @@
-#!/bin/bash 
+#!/bin/bash
 
-GITHUB_USERNAME=aregam96 
-REPO_NAME=usersync
-ACCESS_TOKEN=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 
+# Set your GitHub API token and repository URL
+GITHUB_TOKEN=ithub_pat_11A6BAHBY0v4FgBb16gAde_KiWYD6ABr5LJcaJaqDTkgzX1B7y65N9inPqyASeSNEbNHVHR4LDJGkMfaM6
+REPO_URL=https://github.com/aregam96/usersync.git
 
-CSV_URL=$(curl -s -H "Authorization: token $ACCESS_TOKEN" 
-https://api.github.com/repos/$GITHUB_USERNAME/$REPO_NAME/contents/usersync.csv?ref=main | grep -o 'download_url.*' | cut -d 
-'"' -f 3)
+# Set the file name and path for the usersync.csv file
+FILENAME="usersync.csv"
+FILEPATH="./$FILENAME"
 
-git clone $CSV_URL users
+# Clone the repository using the GitHub API token
+git clone "$REPO_URL" --quiet
+cd "$(basename "$REPO_URL" .git)"
+
+# Read the CSV file line by line and clone the users
+while IFS=',' read -r ID Name Email Slack GitHub Team Jira
+do
+    echo "Cloning $username"
+    git clone "https://$Name:$Email:$GitHub@github.com/$username/your_repository.git" --quiet
+done < "$FILEPATH"
