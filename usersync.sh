@@ -49,20 +49,5 @@ while IFS=',' read -r name email team; do
       --output none
     echo "Created user $name ($email) with password $password." 
   fi
-
-  # Check if the group already exists in Azure AD
-  if ! az ad group show --group "$team" &>/dev/null; then
-    # Create the group in Azure AD
-    az ad group create \
-      --display-name "$team" \
-      --mail-nickname "$team" \
-      --output none
-    echo "Created group $team."
-  fi
-
-  # Add the user to the specified group
-  az ad group member check --group "$team" --member-id "$email" &>/dev/null || \
-    az ad group member add --group "$team" --member-id "$email" &>/dev/null
-  echo "Added user $name ($email) to group $team."
-
+  
 done < "$csv_file"
