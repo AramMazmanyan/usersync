@@ -1,18 +1,19 @@
 #!/bin/bash
+#set -e
 
-#GitHub API token and repository URL
+# #GitHub API token and repository URL
     GITHUB_TOKEN=ithub_pat_11A6BAHBY0v4FgBb16gAde_KiWYD6ABr5LJcaJaqDTkgzX1B7y65N9inPqyASeSNEbNHVHR4LDJGkMfaM6
     REPO_URL=https://github.com/aregam96/usersync.git
 
-#File name and path for the csv file
+# #File name and path for the csv file
     FILENAME="usersync.csv"
     FILEPATH="./$FILENAME"
 
-#Clone the repository using the GitHub API token
-    git clone "$REPO_URL" --quiet
-    cd "$(basename "$REPO_URL" .git)"
+# #Clone the repository using the GitHub API token
+    # git clone "$REPO_URL" --quiet
+    # cd "$(basename "$REPO_URL" .git)"
 
-#parse the file version 3
+# #parse the file version 3
     while IFS="," read -r rec_column1 rec_column2 rec_column3
     do
         echo "Name-$rec_column1"
@@ -22,7 +23,7 @@
     done < <(tail -n +2 $FILENAME)
 
 # Set the name of the CSV file
-    csv_file=$FILENAME
+     csv_file=$FILENAME
 
 # Set the name of the Azure AD tenant
     tenant_name="AregTestingEnv"
@@ -33,7 +34,7 @@
 # Authenticate to Azure using the Azure CLI
     az login
 
-# Loop through each row in the CSV file for user check/creation
+# # Loop through each row in the CSV file for user check/creation
     while IFS=',' read -r name email team; do
 
     # Check if the user already exists in Azure AD
@@ -41,7 +42,7 @@
     echo "User $name ($email) already exists in Azure AD."
 
   else
-    # Create the user in Azure AD
+    #Create the user in Azure AD
     password=$(openssl rand -base64 12)
     az ad user create \
       --display-name "$name" \
@@ -53,20 +54,25 @@
 
     done < <(tail -n +2 $FILENAME)
 
-# Loop through each row in the CSV file for group check/creation
-    while IFS=',' read -r name email team; do
+# Path to CSV file containing list of user principal names
+    FILEPATH="./$FILENAME"
+    # Loop through each line in the CSV file
+    while read line || [ -n "$line" ]
+    do
+    
+    # Extract the user principal name and team from the line
+    email=$(echo $line | awk -F "," '{ print $2}')
+    echo "email=$(echo $line | awk -F "," '{ print $2}')"
+    
+     # team=$(echo $line | cut -d ',' -f 3 )
+    team=$(echo $line | awk -F "," '{ print $3}')
+    echo "team=$(echo $line | awk -F "," '{ print $3}')"
 
-    #List the users on the group
-    if az ad group member list --group "$team"
+    # Get the object ID of the user using the Azure CLI
+    user_id=$(az ad user show --id "$email" --query id --output tsv)
 
-    # Check if the user is a member of the group1
-    if ! az ad group member check --group "$team" --member-id "$email" &>/dev/null; then
-        echo "User $email is already a member of group $team"
+    # Check if the user is a member of the group
+    az ad group member add --group "$team" --member-id "$user_id"
+    echo "az ad group member add --group $team --member-id $user_id"
 
-    # Add the user to the group
-  else
-    az ad group member add --group "$team" --member-id "$email"
-        echo "User $email added to group $team"  
-    fi
-
-done < <(tail -n +2 $FILENAME)
+    done < <(tail -n +2 $FILENAME)
