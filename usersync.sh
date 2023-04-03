@@ -1,17 +1,16 @@
 #!/bin/bash
-#set -e
 
-# #GitHub API token and repository URL
+# GitHub API token and repository URL
     GITHUB_TOKEN=ithub_pat_11A6BAHBY0v4FgBb16gAde_KiWYD6ABr5LJcaJaqDTkgzX1B7y65N9inPqyASeSNEbNHVHR4LDJGkMfaM6
     REPO_URL=https://github.com/aregam96/usersync.git
 
-# #File name and path for the csv file
+# Clone the repository using the GitHub API token
+    git clone "$REPO_URL" --quiet
+    cd "$(basename "$REPO_URL" .git)"
+
+# File name and path for the csv file
     FILENAME="usersync.csv"
     FILEPATH="./$FILENAME"
-
-# #Clone the repository using the GitHub API token
-    # git clone "$REPO_URL" --quiet
-    # cd "$(basename "$REPO_URL" .git)"
 
 # #parse the file version 3
     while IFS="," read -r rec_column1 rec_column2 rec_column3
@@ -64,7 +63,6 @@
     email=$(echo $line | awk -F "," '{ print $2}')
     echo "email=$(echo $line | awk -F "," '{ print $2}')"
     
-     # team=$(echo $line | cut -d ',' -f 3 )
     team=$(echo $line | awk -F "," '{ print $3}')
     echo "team=$(echo $line | awk -F "," '{ print $3}')"
 
