@@ -5,7 +5,7 @@
     REPO_URL=https://github.com/aregam96/usersync.git
 
 # Clone the repository using the GitHub API token
-    # git clone "$REPO_URL"
+    git clone "$REPO_URL"
     cd "$(basename "$REPO_URL" .git)"
 
 # File name and path for the csv file
