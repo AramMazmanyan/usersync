@@ -35,14 +35,11 @@
     echo "[$timestamp] [$severity] $message" 
  }
 
-# Set the name of the CSV file
-   csv_file=$FILENAME
-  # Set the name of the Azure AD tenant
-    tenant_name="AregTestingEnv"
-  # Set the name of the Azure AD app
-    app_name="aregtest"
-  #  log in azure ad using Service Principle
-  az login --service-principal --username 8a839d12-a3c5-4dc7-8561-a7c1a80bafb4 -p=lCD8Q~SENxUhx5lFWtQl1Rz232mEo__uHUXEJa9Y --tenant 7c2be92f-7fb6-4331-9453-11501f1f57e3
+#  log in azure ad using Service Principle
+  Username="8a839d12-a3c5-4dc7-8561-a7c1a80bafb4"
+  Password="lCD8Q~SENxUhx5lFWtQl1Rz232mEo__uHUXEJa9Y"
+  Tenant="7c2be92f-7fb6-4331-9453-11501f1f57e3"
+  az login --service-principal --username "$Username" -p="$Password" --tenant "$Tenant"
 
 # Loop through each row in the CSV file for user check/creation
  while IFS=',' read -r name email team; do
