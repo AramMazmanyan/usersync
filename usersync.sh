@@ -12,15 +12,6 @@
     FILENAME="usersync.csv"
     FILEPATH="./$FILENAME"
 
-#Parse the file
-    while IFS="," read -r rec_column1 rec_column2 rec_column3
-    do
-        echo "Name-$rec_column1"
-        echo "Email: $rec_column2"
-        echo "Team: $rec_column3"
-        echo ""
-    done < <(tail -n +2 $FILENAME)
-
 #Create the log file
   log_file="log_file.log"
   log=log_file.log
