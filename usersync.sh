@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # GitHub API token and repository URL
-    GITHUB_TOKEN=ithub_pat_11A6BAHBY0v4FgBb16gAde_KiWYD6ABr5LJcaJaqDTkgzX1B7y65N9inPqyASeSNEbNHVHR4LDJGkMfaM6
-    REPO_URL=https://github.com/aregam96/usersync.git
+#     GITHUB_TOKEN=ithub_pat_11A6BAHBY0v4FgBb16gAde_KiWYD6ABr5LJcaJaqDTkgzX1B7y65N9inPqyASeSNEbNHVHR4LDJGkMfaM6
+#     REPO_URL=https://github.com/aregam96/usersync.git
 
-# Clone the repository using the GitHub API token
-    git clone "$REPO_URL"
-    cd "$(basename "$REPO_URL" .git)"
+# # Clone the repository using the GitHub API token
+#     git clone "$REPO_URL"
+#     cd "$(basename "$REPO_URL" .git)"
 
 # File name and path for the csv file
     FILENAME="usersync.csv"
@@ -27,14 +27,15 @@
  }
 
 #  log in azure ad using Service Principle
-  Username="8a839d12-a3c5-4dc7-8561-a7c1a80bafb4"
-  Password="lCD8Q~SENxUhx5lFWtQl1Rz232mEo__uHUXEJa9Y"
-  Tenant="7c2be92f-7fb6-4331-9453-11501f1f57e3"
-  az login --service-principal --username "$Username" -p="$Password" --tenant "$Tenant"
+  az login --service-principal --username "$1" -p="$2" --tenant "$3"
 
 # Loop through each row in the CSV file for user check/creation
- while IFS=',' read -r name email team; do
-
+ while read line || [ -n "$line" ]
+ do 
+    # Extract the user principal name and team from the line
+    name=$(echo "$line" | awk -F "," '{ print $1}')
+    email=$(echo "$line" | awk -F "," '{ print $2}')
+    team=$(echo "$line" | awk -F "," '{ print $3}')
     # Check if the user already exists in Azure AD
     if az ad user show --id "$email" &>/dev/null; then 
         log "User $name ($email) already exists in Azure AD." "INFO"
@@ -49,7 +50,7 @@
         log "Created user $name ($email) with password $password." "INFO"
     fi 
 
- done < <(tail -n +2 "$FILENAME")
+done < <(tail -n +2 "$FILENAME")
 
 # Loop through each line in the CSV file
  while read line || [ -n "$line" ]
@@ -69,4 +70,4 @@
         error_code=$?
         log "Error $error_code:" "ERROR"
     fi
-  done < <(tail -n +2 "$FILENAME")
+done < <(tail -n +2 "$FILENAME")
