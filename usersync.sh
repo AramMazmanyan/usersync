@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # GitHub API token and repository URL
-#     GITHUB_TOKEN=ithub_pat_11A6BAHBY0v4FgBb16gAde_KiWYD6ABr5LJcaJaqDTkgzX1B7y65N9inPqyASeSNEbNHVHR4LDJGkMfaM6
-#     REPO_URL=https://github.com/aregam96/usersync.git
+ #     GITHUB_TOKEN=ithub_pat_11A6BAHBY0v4FgBb16gAde_KiWYD6ABr5LJcaJaqDTkgzX1B7y65N9inPqyASeSNEbNHVHR4LDJGkMfaM6
+ #     REPO_URL=https://github.com/aregam96/usersync.git
 
 # # Clone the repository using the GitHub API token
-#     git clone "$REPO_URL"
-#     cd "$(basename "$REPO_URL" .git)"
+ #     git clone "$REPO_URL"
+ #     cd "$(basename "$REPO_URL" .git)"
 
 # File name and path for the csv file
     FILENAME="usersync.csv"
@@ -50,9 +50,9 @@
         log "Created user $name ($email) with password $password." "INFO"
     fi 
 
-done < <(tail -n +2 "$FILENAME")
+ done < <(tail -n +2 "$FILENAME")
 
-# Loop through each line in the CSV file
+# Loop through each line in the CSV file for group check/add
  while read line || [ -n "$line" ]
  do 
     # Extract the user principal name and team from the line
@@ -70,4 +70,4 @@ done < <(tail -n +2 "$FILENAME")
         error_code=$?
         log "Error $error_code:" "ERROR"
     fi
-done < <(tail -n +2 "$FILENAME")
+ done < <(tail -n +2 "$FILENAME")
