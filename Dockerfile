@@ -1,3 +1,5 @@
-docker pull mcr.microsoft.com/azure-cli
-WORKDIR ./usersync
-CMD bash ./usersync.sh
+FROM mcr.microsoft.com/azure-cli
+
+COPY . /areg
+
+WORKDIR /areg
