@@ -1,17 +1,17 @@
 #!/bin/bash
 
 # GitHub API token and repository URL
-#     GITHUB_TOKEN=ithub_pat_11A6BAHBY0v4FgBb16gAde_KiWYD6ABr5LJcaJaqDTkgzX1B7y65N9inPqyASeSNEbNHVHR4LDJGkMfaM6
-#     REPO_URL=https://github.com/aregam96/usersync.git
+ #     GITHUB_TOKEN=ithub_pat_11A6BAHBY0v4FgBb16gAde_KiWYD6ABr5LJcaJaqDTkgzX1B7y65N9inPqyASeSNEbNHVHR4LDJGkMfaM6
+ #     REPO_URL=https://github.com/aregam96/usersync.git
 
 # # Clone the repository using the GitHub API token
-#     git clone "$REPO_URL"
-#     cd "$(basename "$REPO_URL" .git)"
+ #     git clone "$REPO_URL"
+ #     cd "$(basename "$REPO_URL" .git)"
 
 # File name and path for the csv file
     FILENAME="usersync.csv"
     FILEPATH="./$FILENAME"
-
+ 
 #Create the log file
   log_file="log_file.log"
   log=log_file.log
@@ -27,7 +27,8 @@
  }
 
 #  log in azure ad using Service Principle
-  az login --service-principal --username "$1" -p="$2" --tenant "$3"
+# az login --service-principal --username "$1" -p "$2" --tenant "$3" 
+az login --service-principal --username 8a839d12-a3c5-4dc7-8561-a7c1a80bafb4 -p=lCD8Q~SENxUhx5lFWtQl1Rz232mEo__uHUXEJa9Y --tenant 7c2be92f-7fb6-4331-9453-11501f1f57e3
 
 # Loop through each row in the CSV file for user check/creation
  while read line || [ -n "$line" ]
@@ -50,9 +51,9 @@
         log "Created user $name ($email) with password $password." "INFO"
     fi 
 
-done < <(tail -n +2 "$FILENAME")
+ done < <(tail -n +2 "$FILENAME")
 
-# Loop through each line in the CSV file
+# Loop through each line in the CSV file for group check/add
  while read line || [ -n "$line" ]
  do 
     # Extract the user principal name and team from the line
@@ -70,4 +71,4 @@ done < <(tail -n +2 "$FILENAME")
         error_code=$?
         log "Error $error_code:" "ERROR"
     fi
-done < <(tail -n +2 "$FILENAME")
+ done < <(tail -n +2 "$FILENAME")
