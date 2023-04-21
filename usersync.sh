@@ -12,23 +12,23 @@
     FILENAME="usersync.csv"
     FILEPATH="./$FILENAME"
  
-#Create the log file
-  log_file="log_file.log"
-  log=log_file.log
-  date >> $log
+# #Create the log file
+#   log_file="log_file.log"
+#   log=log_file.log
+#   date >> $log
 
-# Define the log function
- function log() {
-    local message="$1"
-    local severity="$2"
-    local timestamp=$(date "+%Y-%m-%d %H:%M:%S")
-    echo "[$timestamp] [$severity] $message" >> "$log"
-    echo "[$timestamp] [$severity] $message" 
- }
+# # Define the log function
+#  function log() {
+#     local message="$1"
+#     local severity="$2"
+#     local timestamp=$(date "+%Y-%m-%d %H:%M:%S")
+#     echo "[$timestamp] [$severity] $message" >> "$log"
+#     echo "[$timestamp] [$severity] $message" 
+#  }
 
 #  log in azure ad using Service Principle
-# az login --service-principal --username "$1" -p "$2" --tenant "$3" 
-az login --service-principal --username 8a839d12-a3c5-4dc7-8561-a7c1a80bafb4 -p=lCD8Q~SENxUhx5lFWtQl1Rz232mEo__uHUXEJa9Y --tenant 7c2be92f-7fb6-4331-9453-11501f1f57e3
+az login --service-principal --username "$1" -p="$2" --tenant "$3"
+# az login --service-principal --username 8a839d12-a3c5-4dc7-8561-a7c1a80bafb4 -p=lCD8Q~SENxUhx5lFWtQl1Rz232mEo__uHUXEJa9Y --tenant 7c2be92f-7fb6-4331-9453-11501f1f57e3
 
 # Loop through each row in the CSV file for user check/creation
  while read line || [ -n "$line" ]
