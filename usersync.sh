@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "Username: $1"
+echo "Password: $2"
+echo "Tenant: $3"
+
 # GitHub API token and repository URL
  #     GITHUB_TOKEN=ithub_pat_11A6BAHBY0v4FgBb16gAde_KiWYD6ABr5LJcaJaqDTkgzX1B7y65N9inPqyASeSNEbNHVHR4LDJGkMfaM6
  #     REPO_URL=https://github.com/aregam96/usersync.git
